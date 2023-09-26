@@ -13,6 +13,12 @@ jobs:
     steps:
       - checkout
       - run: python test.py
+  deploy:
+    docker:
+      - image: cimg/python:3.9
+    steps:   
+      - checkout
+      - run: echo "Deploying to dev server"
 
 workflows:
   build_and_test:
@@ -21,5 +27,11 @@ workflows:
       - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+                only: dev
           
     
